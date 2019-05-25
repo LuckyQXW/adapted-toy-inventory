@@ -1,17 +1,11 @@
 <?php
   /**
-   * CSE 154
-   * common.php starter code for CP5. You may add more "common" functions to this if you would
-   * like, but this will help get started with getting your PDO connection (more information
-   * in Friday's lecture and its reading).
-   *
-   * TODO: Implement the 2 TODOS to use this common.php file for CP5:
-   * 1. Fill in server variables found on MAMP home page to connect PDO to database
-   * 2. Handle a DB connection error with a HTTP/1.1 503 Service Unavailable error
-   *
-   * Remember to use include("common.php") at the top of any PHP file that wants to
-   * use these function(s)!
-   */
+  * Name: Wen Qiu
+  * Date: May 30, 2019
+  * Section: CSE 154 AJ
+  * This is the php file that contains the get_PDO function for the other web
+  * services to connect to the Adapted Toy Inventory database
+  */
 
   /**
    * Returns a PDO object connected to the database. If a PDOException is thrown when
@@ -35,7 +29,37 @@
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $db;
     } catch (PDOException $ex) {
-      # TODO: You must handle a DB error (503 Service Unavailable) if an error occurs.
+      handle_db_error("Cannot connect to the database. Please try again later.");
     }
+  }
+
+/**
+ * Copied from wpl-queue lecture example
+ * Prints out a plain text 503 error message given $msg. If given a second (optional) argument as
+ * an PDOException, prints details about the cause of the exception.
+ * @param $msg {string} - Plain text 503 message to output
+ * @param $ex {PDOException} - (optional) Exception object with additional exception details
+ */
+ function handle_db_error($msg, $ex=NULL) {
+   process_error("HTTP/1.1 503 Service Unavailable", $msg, $ex);
+ }
+
+ /**
+  * Copied from wpl-queue lecture example
+  * Prints out a plain text error message given $msg after sending the given header (handy
+  * to factor out error-handling between 400 request errors and 503 db errors).
+  * If given a second (optional) argument as an Exception, prints details about the cause of the exception.
+  *
+  * @param $type {string} - The HTTP error header string.
+  * @param $msg {string} - Plain text message to output.
+  * @param $ex {Excpetoin} - (optional) Exception object with additional exception details.
+  */
+  function process_error($type, $msg, $ex=NULL) {
+    header($type);
+    header("Content-type: text/plain");
+    if ($ex) {
+      echo ("Error details: $ex \n");
+    }
+    die("{$msg}\n");
   }
 ?>
