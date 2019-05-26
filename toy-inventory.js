@@ -41,8 +41,10 @@
     id("search-term").value = searchTerm;
     if (searchTerm !== "") {
       searchQuery = "&search=" + searchTerm;
-      getToyList();
+    } else {
+      searchQuery = "";
     }
+    getToyList();
   }
 
   /**
