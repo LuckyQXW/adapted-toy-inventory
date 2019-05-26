@@ -19,7 +19,7 @@ filtering criteria.
 
 **Example Request:** `inventory-select.php?mode=toys`
 
-**Example Response:**
+**Example Response:** (abbreviated, will contain the whole list in actual response)
 ```json
 [
     {
@@ -33,8 +33,7 @@ filtering criteria.
         "function": "Lights , Sound , Motion",
         "available": "0",
         "image": ""
-    },
-    ...
+    }
 ]
 ```
 
@@ -60,7 +59,7 @@ A list of valid types:
 
 **Example Request:** `inventory-select.php?mode=toys&type=Lights,Sound,Available`
 
-**Example Response:**
+**Example Response:** (abbreviated, will contain all toys that includes both Lights and Sound function and are available in stock)
 ```json
 [
     {
@@ -74,9 +73,7 @@ A list of valid types:
         "function": "Lights , Sound , Motion",
         "available": "1",
         "image": "https://keep.google.com/u/1/media/v2/1olcQkaFmnprAvdnJsjeBi0HMHXNv3Dvu1GRNWxFr0UcSfDXX9DpWaBt7RxHOxjw/1N0kezevpDoPN690EaP7LElo2XTTuswW4vRo3sxgQW0WA_Def7O-j7wvRF6-MhA?accept=image/gif,image/jpeg,image/jpg,image/png,image/webp,audio/aac&sz=1600"
-    },
-    ...
-    (rest of the toys that includes both Lights and Sound function and are available in stock)
+    }
 ]
 ```
 ### Search for a toy by name
@@ -117,7 +114,7 @@ Two possible values for sort:
 + 1: reverse alphebetical order
 **Example Request:** `inventory-select.php?mode=toys&sort=0`
 
-**Example Response:**
+**Example Response:** (abbreviated, will contain the whole list of toys sorted by name in alphabetical order in actual response)
 ```json
 [
     {
@@ -143,8 +140,7 @@ Two possible values for sort:
         "function": "Lights , Sound",
         "available": "0",
         "image": ""
-    },
-    ...
+    }
 ]
 ```
 
@@ -157,7 +153,6 @@ Two possible values for sort:
 **Returned Data Format**: JSON
 
 **Description:** Returns all the toys from the Adapted Toy Inventory database that matches all the filter options. The `type`, `search`, `sort` parameters can be passed in any order.
-If none of the toys matches all the given filters, returns an empty list.
 
 **Example Request:** `inventory-select.php?mode=toys&type=Lights,Sound&search=monkey&sort=0`
 
