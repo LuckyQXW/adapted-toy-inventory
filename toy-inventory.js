@@ -7,8 +7,10 @@
  */
 (function() {
   "use strict";
-  const SELECT_API = "inventory-select.php";
-
+  const SELECT_API = "inventory-select.php?mode=toys";
+  let sortQuery = "";
+  let typeQuery = "";
+  let searchQuery = "";
   window.addEventListener("load", init);
 
   /**
@@ -19,6 +21,10 @@
     let typeBoxes = qsa(".toy-type");
     for (let i = 0; i < typeBoxes.length; i++) {
       typeBoxes[i].addEventListener("change", updateType);
+    }
+    let sortOptions = qsa(".sort");
+    for (let i = 0; i < sortOptions.length; i++) {
+      sortOptions[i].addEventListener("change", updateSort);
     }
     id("search-btn").addEventListener("click", search);
     id("home").addEventListener("click", loadAllToys);
@@ -34,11 +40,8 @@
     let searchTerm = id("search-term").value.trim();
     id("search-term").value = searchTerm;
     if (searchTerm !== "") {
-      fetch(SELECT_API + "?mode=toys&search=" + searchTerm)
-        .then(checkStatus)
-        .then(JSON.parse)
-        .then(generateToyList)
-        .catch(handleError);
+      searchQuery = "&search=" + searchTerm;
+      getToyList();
     }
   }
 
@@ -54,26 +57,19 @@
         typeString += typeBoxes[i].value + ",";
       }
     }
-    typeString = typeString.substring(0, typeString.length - 1);
-    if(typeString) {
-      fetch(SELECT_API + "?mode=toys&type=" + typeString)
-        .then(checkStatus)
-        .then(JSON.parse)
-        .then(generateToyList)
-        .catch(handleError);
+    if (typeString) {
+      typeQuery = "&type=" + typeString.substring(0, typeString.length - 1);
     } else {
-      loadAllToys();
+      typeQuery = "";
     }
+    getToyList();
   }
 
   /**
-   * Loads all the toys in the toy list
+   * Sends a toy list request with all the query fragments
    */
-  function loadAllToys() {
-    id("error-text").classList.add("hidden");
-    id("search-term").value = "";
-    id("loading").classList.remove("hidden");
-    fetch(SELECT_API + "?mode=toys")
+  function getToyList() {
+    fetch(SELECT_API + typeQuery + sortQuery + searchQuery)
       .then(checkStatus)
       .then(JSON.parse)
       .then(generateToyList)
@@ -81,10 +77,51 @@
   }
 
   /**
+   * Sorts the toy list based on the chosen option
+   */
+  function updateSort() {
+    sortQuery = "&sort=" + qs("input[type=radio]:checked").value;
+    getToyList();
+  }
+
+
+  /**
+   * Loads all the toys in the toy list
+   */
+  function loadAllToys() {
+    resetFilters();
+    id("search-term").value = "";
+    id("loading").classList.remove("hidden");
+    fetch(SELECT_API)
+      .then(checkStatus)
+      .then(JSON.parse)
+      .then(generateToyList)
+      .catch(handleError);
+  }
+
+  /**
+   * Resets all the filters and query fragments
+   */
+  function resetFilters() {
+    let typeBoxes = qsa(".toy-type");
+    for (let i = 0; i < typeBoxes.length; i++) {
+      typeBoxes[i].checked = false;
+    }
+    let sortOptions = qsa(".sort");
+    for (let i = 0; i < sortOptions.length; i++) {
+      sortOptions[i].checked = false;
+    }
+    sortQuery = "";
+    typeQuery = "";
+    searchQuery = "";
+  }
+
+  /**
    * Generates the toy list
    * @param  {Object} json - the json containing a list of toys
    */
   function generateToyList(json) {
+    id("error-text").classList.add("hidden");
     if (json.length) {
       id("toy-list").innerHTML = "";
       for (let i = 0; i < json.length; i++) {
@@ -129,7 +166,6 @@
     toyCard.appendChild(nameText);
     toyCard.appendChild(functionText);
     toyCard.appendChild(availableText);
-    toyCard.classList.add("selectable");
     toyCard.id = name;
     return toyCard;
   }
@@ -138,7 +174,7 @@
    * Shows that no toys matches the search term
    */
   function handleSearchNotFound() {
-    displayErrorView("No toys found that match the search string '"
+    displayErrorView("No toys found that match the filters and the search string '"
       + id("search-term").value.trim() + "', please try again.");
     id("loading").classList.add("hidden");
   }
@@ -168,6 +204,15 @@
    */
   function id(elementID) {
     return document.getElementById(elementID);
+  }
+
+  /**
+   * Helper method for getting an element by selector
+   * @param {String} selector - the selector used to select the target elements
+   * @return {Object} A element in the DOM with the given selector
+   */
+  function qs(selector) {
+    return document.querySelector(selector);
   }
 
   /**
