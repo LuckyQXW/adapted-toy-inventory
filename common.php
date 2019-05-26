@@ -1,10 +1,11 @@
 <?php
-  /**
-  * Name: Wen Qiu
-  * Date: May 30, 2019
-  * Section: CSE 154 AJ
-  * This is the php file that contains the get_PDO function for the other web
-  * services to connect to the Adapted Toy Inventory database
+  /*
+    Name: Wen Qiu
+    Date: May 30, 2019
+    Section: CSE 154 AJ
+    This file provides back-end support for the Adapted Toy Inventory web services.
+    Contains get_PDO function which establishes the connection to the Adapted Toy
+    Inventory database. If the connection fails, output 503 error as plain text.
   */
 
   /**
@@ -16,7 +17,7 @@
   function get_PDO() {
     # Variables for connections to the database.
     $host = "localhost";
-    $port = "8889"
+    $port = "8889";
     $user = "root";
     $password = "root";
     $dbname = "inventorydb";
@@ -46,10 +47,9 @@
 
  /**
   * Copied from wpl-queue lecture example
-  * Prints out a plain text error message given $msg after sending the given header (handy
-  * to factor out error-handling between 400 request errors and 503 db errors).
-  * If given a second (optional) argument as an Exception, prints details about the cause of the exception.
-  *
+  * Prints out a plain text error message given $msg after sending the given header.
+  * If given a second (optional) argument as an Exception, prints details about the cause
+  * of the exception.
   * @param $type {string} - The HTTP error header string.
   * @param $msg {string} - Plain text message to output.
   * @param $ex {Excpetoin} - (optional) Exception object with additional exception details.
@@ -61,5 +61,15 @@
       echo ("Error details: $ex \n");
     }
     die("{$msg}\n");
+  }
+
+  /**
+   * Responds 400 error and returns a message in plain text
+   * @param  [string] $msg - the message to be displayed as error
+   */
+  function print_errors($msg) {
+    header("HTTP/1.1 400 Invalid Request");
+    header("Content-type: text/plain");
+    echo $msg;
   }
 ?>

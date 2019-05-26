@@ -4,6 +4,7 @@
      Date: May 30, 2019
      Section: CSE 154 AJ
      This is the index.html page for the Adapted Toy Inventory.
+     Uses bootstrap for layout and styling.
 -->
 <html lang=en>
   <head>
@@ -66,7 +67,7 @@
                 </div>
                 <div class="form-check ml-3">
                   <input class="form-check-input toy-type" type="checkbox"
-                  value="Bump N' Go" id="bump-n-go">
+                  value="Bump N'' Go" id="bump-n-go">
                   <label class="form-check-label">
                     Bump N' Go
                   </label>
@@ -106,6 +107,10 @@
       </nav>
     </header>
     <main>
+      <!-- Error Message View -->
+      <h3 id="error-text" class="hidden"></h3>
+      
+      <!-- Toy List View -->
       <article id="toy-list">
       </article>
     </main>

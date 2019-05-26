@@ -6,6 +6,10 @@
     consistent look and feel.
 */
 
+#error-text {
+  margin: 20px auto auto 20px;
+}
+
 #toy-list {
   display: flex;
   justify-content: space-around;

@@ -6,6 +6,7 @@
 
 USE inventorydb;
 
+-- Creates the inventory table in the database
 CREATE TABLE inventory(
   id INT NOT NULL AUTO_INCREMENT,
   item VARCHAR(255) NOT NULL,

@@ -7,7 +7,7 @@
  */
 (function() {
   "use strict";
-  const BASE_URL = "toyinventory.php";
+  const SELECT_API = "inventory-select.php";
 
   window.addEventListener("load", init);
 
@@ -15,7 +15,7 @@
    * Loads all books in the beginning and attaches actions to buttons
    */
   function init() {
-    // loadAllToys();
+    loadAllToys();
     let typeBoxes = qsa(".toy-type");
     for (let i = 0; i < typeBoxes.length; i++) {
       typeBoxes[i].addEventListener("change", updateType);
@@ -26,17 +26,19 @@
 
   /**
    * Finds and lists toys that match the given search term
+   * @param  {Event} e - the button click event
    */
   function search(e) {
     id("loading").classList.remove("hidden");
     e.preventDefault();
     let searchTerm = id("search-term").value.trim();
+    id("search-term").value = searchTerm;
     if (searchTerm !== "") {
-      fetch(BASE_URL + "?mode=toys&search=" + searchTerm)
+      fetch(SELECT_API + "?mode=toys&search=" + searchTerm)
         .then(checkStatus)
         .then(JSON.parse)
         .then(generateToyList)
-        .catch(console.error);
+        .catch(handleError);
     }
   }
 
@@ -54,11 +56,11 @@
     }
     typeString = typeString.substring(0, typeString.length - 1);
     if(typeString) {
-      fetch(BASE_URL + "?mode=toys&type=" + typeString)
+      fetch(SELECT_API + "?mode=toys&type=" + typeString)
         .then(checkStatus)
         .then(JSON.parse)
         .then(generateToyList)
-        .catch(console.error);
+        .catch(handleError);
     } else {
       loadAllToys();
     }
@@ -68,13 +70,14 @@
    * Loads all the toys in the toy list
    */
   function loadAllToys() {
+    id("error-text").classList.add("hidden");
     id("search-term").value = "";
     id("loading").classList.remove("hidden");
-    fetch(BASE_URL + "?mode=toys")
+    fetch(SELECT_API + "?mode=toys")
       .then(checkStatus)
       .then(JSON.parse)
       .then(generateToyList)
-      .catch(console.error);
+      .catch(handleError);
   }
 
   /**
@@ -82,13 +85,17 @@
    * @param  {Object} json - the json containing a list of toys
    */
   function generateToyList(json) {
-    id("toy-list").innerHTML = "";
-    for(let i = 0; i < json.length; i++) {
-      id("toy-list").appendChild(createToy(json[i].item,
-        json[i].function, json[i].available, json[i].image));
+    if (json.length) {
+      id("toy-list").innerHTML = "";
+      for (let i = 0; i < json.length; i++) {
+        id("toy-list").appendChild(createToy(json[i].item,
+          json[i].function, json[i].available, json[i].image));
+      }
+      id("loading").classList.add("hidden");
+      id("toy-list").classList.remove("hidden");
+    } else {
+      handleSearchNotFound();
     }
-    id("loading").classList.add("hidden");
-    id("toy-list").classList.remove("hidden");
   }
 
   /**
@@ -96,6 +103,7 @@
    * @param  {String} name - name of the toy
    * @param  {String} func - function/type of the toy
    * @param  {String} num - number of available toys in stock in a string
+   * @param  {String} image - the url of the toy image
    * @return {Object} - the toy card displaying the given name, function, and number
    *                    available in stock
    */
@@ -107,8 +115,8 @@
     let functionText = document.createElement("h3");
     let availableText = document.createElement("p");
     if(!image) {
-      pic.src = "https://lakeshoreinlove.com/wp-content/uploads/2018/07/" +
-      "thumbnail-default-nob.png";
+      pic.src = "https://lakeshoreinlove.com/wp-content/uploads/2018/07/"
+      + "thumbnail-default-nob.png";
       pic.alt = "placeholder image";
     } else {
       pic.src = image;
@@ -124,6 +132,33 @@
     toyCard.classList.add("selectable");
     toyCard.id = name;
     return toyCard;
+  }
+
+  /**
+   * Shows that no toys matches the search term
+   */
+  function handleSearchNotFound() {
+    displayErrorView("No toys found that match the search string '"
+      + id("search-term").value.trim() + "', please try again.");
+    id("loading").classList.add("hidden");
+  }
+
+  /**
+   * Shows that there is an error when making a request to the web service
+   */
+  function handleError() {
+    displayErrorView("Something went wrong with the request. Please try again later.");
+    id("loading").classList.add("hidden");
+  }
+
+  /**
+   * Displays the error view with the given error message
+   * @param  {String} message - the error message to be displayed
+   */
+  function displayErrorView(message) {
+    id("toy-list").classList.add("hidden");
+    id("error-text").classList.remove("hidden");
+    id("error-text").textContent = message;
   }
 
   /**
