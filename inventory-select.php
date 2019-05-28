@@ -38,17 +38,14 @@
 
   include 'common.php';
 
-  $db = get_PDO();
-  if (isset($db)) {
-    if (isset($_GET["mode"]) && $_GET["mode"] === "toys") {
-      $output = get_toys($db);
-      if (isset($output)) {
-        header("Content-Type: application/json");
-        echo json_encode($output);
-      }
-    } else {
-      print_errors("Please put in a valid mode parameter.");
+  if (isset($_GET["mode"]) && $_GET["mode"] === "toys") {
+    $output = get_toys();
+    if (isset($output)) {
+      header("Content-Type: application/json");
+      echo json_encode($output);
     }
+  } else {
+    print_errors("Please put in a valid mode parameter.");
   }
 
   /**
@@ -59,25 +56,25 @@
    *                   includes the item, function, availability, and the image
    *                   link of the toy
    */
-  function get_toys($db) {
+  function get_toys() {
+    $db = get_PDO();
     $output = null;
     try {
       $query = get_query();
       $rows = $db->query($query);
+      $output = array();
+      foreach($rows as $row) {
+        $result = array();
+        $result["item"] = $row["item"];
+        $result["function"] = $row["function"];
+        $result["available"] = $row["available"];
+        $result["image"] = $row["image"];
+        array_push($output, $result);
+      }
+      return $output;
     } catch (PDOException $ex) {
       handle_db_error("Can not query the database. Please check your parameters.");
     }
-
-    $output = array();
-    foreach($rows as $row) {
-      $result = array();
-      $result["item"] = $row["item"];
-      $result["function"] = $row["function"];
-      $result["available"] = $row["available"];
-      $result["image"] = $row["image"];
-      array_push($output, $result);
-    }
-    return $output;
   }
 
   /**
