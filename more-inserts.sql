@@ -1,7 +1,8 @@
 -- Name: Wen Qiu
 -- Date: May 30, 2019
 -- Section: CSE 154 AJ
--- This sql file inserts the remaining data from the Adapted Toy Inventory.
+-- This sql file inserts the remaining data into the inventory table for the
+-- Adapted Toy Inventory.
 
 INSERT INTO `inventory` (`id`, `item`, `function`, `total`, `adapted`, `unadapted`, `broken`, `other`, `donated`, `available`, `image`)
 VALUES

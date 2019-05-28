@@ -6,6 +6,7 @@
     This file provides back-end support for the Adapted Toy Inventory web services.
     Contains get_PDO function which establishes the connection to the Adapted Toy
     Inventory database. If the connection fails, output 503 error as plain text.
+    Also contains other error handling functions.
   */
 
   /**

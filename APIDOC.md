@@ -110,8 +110,9 @@ If none of the toys matches the search term, returns an empty list.
 
 **Description:** Returns a sorted list of toys from the Adapted Toy Inventory database in the specified order by name.
 Two possible values for sort:
-+ 0: alphebetical order
-+ 1: reverse alphebetical order
++ 0: alphabetical order
++ 1: reverse alphabetical order
+
 **Example Request:** `inventory-select.php?mode=toys&sort=0`
 
 **Example Response:** (abbreviated, will contain the whole list of toys sorted by name in alphabetical order in actual response)

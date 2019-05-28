@@ -1,8 +1,8 @@
 -- Name: Wen Qiu
 -- Date: May 30, 2019
 -- Section: CSE 154 AJ
--- This sql file sets up the database for the Adaptable Toy Inventory and inserts
--- the first row.
+-- This sql file sets up an inventory table for the Adaptable Toy Inventory and
+-- inserts the first row.
 
 USE inventorydb;
 
