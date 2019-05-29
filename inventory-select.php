@@ -79,16 +79,17 @@
 
   /**
    * Constructs a query based on the parameters
-   * @return [string] - the query based on the parameters passed in
+   * @return [string] - the query based on the GET parameters passed in
    */
   function get_query() {
     $query = "SELECT * FROM inventory";
     if (isset($_GET["type"]) || isset($_GET["search"])) {
-      $query .= " WHERE ";
-      $query .= get_filter_query();
-      $query .= get_search_query();
-      // Trim the last added AND
-      $query = substr($query, 0, strlen($query) - 5);
+      $filter_query = " WHERE ";
+      $filters = array();
+      get_filter_query($filters);
+      get_search_query($filters);
+      $filter_query .= implode(" AND ", $filters);
+      $query .= $filter_query;
     }
     $query .= get_sort_query();
     $query .= ";";
@@ -97,36 +98,30 @@
 
   /**
    * Constructs a fragment of the query based on type parameter
-   * @return [string] - a fragment of the query based on type parameter with a
-   *                    trailing AND
+   * @param  [array] $filters - the filters array containing a list of filter queries
    */
-  function get_filter_query() {
-    $query = "";
+  function get_filter_query(&$filters) {
     if (isset($_GET["type"])) {
       $types = explode(",", $_GET["type"]);
       foreach ($types as $type) {
         if ($type !== "Available") {
-          $query .= "function LIKE '%{$type}%' AND ";
+          array_push($filters, "function LIKE '%{$type}%'");
         } else {
-          $query .= "available > 0 AND ";
+          array_push($filters, "available > 0");
         }
       }
     }
-    return $query;
   }
 
   /**
    * Constructs a fragment of the query based on search parameter
-   * @return [string] - a fragment of the query based on search parameter with a
-   *                    trailing AND
+   * @param [array] $filters - the filters array containing a list of filter queries
    */
-  function get_search_query() {
-    $query = "";
+  function get_search_query(&$filters) {
     if (isset($_GET["search"])) {
       $search = strtoupper($_GET["search"]);
-      $query .= "upper(item) LIKE '%{$search}%' AND ";
+      array_push($filters, "upper(item) LIKE '%{$search}%'");
     }
-    return $query;
   }
 
   /**
