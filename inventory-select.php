@@ -63,13 +63,9 @@
       $query = get_query();
       $rows = $db->query($query);
       $output = array();
+      $rows->setFetchMode(PDO::FETCH_ASSOC);
       foreach($rows as $row) {
-        $result = array();
-        $result["item"] = $row["item"];
-        $result["function"] = $row["function"];
-        $result["available"] = $row["available"];
-        $result["image"] = $row["image"];
-        array_push($output, $result);
+        array_push($output, $row);
       }
       return $output;
     } catch (PDOException $ex) {
@@ -82,7 +78,7 @@
    * @return [string] - the query based on the GET parameters passed in
    */
   function get_query() {
-    $query = "SELECT * FROM inventory";
+    $query = "SELECT item, function, available, image FROM inventory";
     if (isset($_GET["type"]) || isset($_GET["search"])) {
       $filter_query = " WHERE ";
       $filters = array();

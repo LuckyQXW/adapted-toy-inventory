@@ -11,6 +11,8 @@
   let sortQuery = "";
   let typeQuery = "";
   let searchQuery = "";
+  // Regex from Stack Overflow to check for potential SQL injection :(
+  const HACK_DETECT_REGEX = /[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi;
   window.addEventListener("load", init);
 
   /**
@@ -38,13 +40,17 @@
     id("loading").classList.remove("hidden");
     e.preventDefault();
     let searchTerm = id("search-term").value.trim();
-    id("search-term").value = searchTerm;
-    if (searchTerm !== "") {
-      searchQuery = "&search=" + searchTerm;
+    if (searchTerm.match(/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi)) {
+      displayErrorView("Potential malicious attack detected. Please try other search terms");
     } else {
-      searchQuery = "";
+      id("search-term").value = searchTerm;
+      if (searchTerm !== "") {
+        searchQuery = "&search=" + searchTerm;
+      } else {
+        searchQuery = "";
+      }
+      getToyList();
     }
-    getToyList();
   }
 
   /**
