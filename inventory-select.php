@@ -61,7 +61,13 @@
     $output = null;
     try {
       $query = get_query();
-      $rows = $db->query($query);
+      $rows = $db->prepare($query);
+      // Necessary work-around to bind the pattern string properly
+      if (isset($_GET["search"])) {
+        $search = "%".strtoupper($_GET["search"])."%";
+        $rows->bindValue(':search', $search);
+      }
+      $rows->execute();
       $output = array();
       $rows->setFetchMode(PDO::FETCH_ASSOC);
       foreach($rows as $row) {
@@ -116,7 +122,7 @@
   function get_search_query(&$filters) {
     if (isset($_GET["search"])) {
       $search = strtoupper($_GET["search"]);
-      array_push($filters, "upper(item) LIKE '%{$search}%'");
+      array_push($filters, "upper(item) LIKE :search");
     }
   }
 
