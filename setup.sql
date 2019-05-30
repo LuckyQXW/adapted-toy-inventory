@@ -25,4 +25,4 @@ CREATE TABLE inventory(
 -- Handles image as empty string to stay consistent with other imported rows
 INSERT INTO inventory(id, item, function, total, adapted, unadapted, broken,
   other, donated, available, image)
-VALUES (0, "Fire Engine", "Lights , Sound , Motion , Bump N' Go", 9, 8, 0, 0, 1, 2, 6, "");
+VALUES (1, "Fire Engine", "Lights , Sound , Motion , Bump N' Go", 9, 8, 0, 0, 1, 2, 6, "");
