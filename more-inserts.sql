@@ -36,7 +36,7 @@ VALUES
 (28, 'Take Along Tunes', 'Lights , Sound', 2, 2, 0, 0, 0, 0, 2, ''),
 (29, 'Rock & Glow Unicorn Toy', 'Lights , Sound , Motion', 1, 1, 0, 0, 0, 1, 0, 'http://depts.washington.edu/adaptuw/wordpress/wp-content/uploads/2019/05/unicorn.jpg'),
 (30, 'Laugh & Learn Smart Stages Piggy Bank', 'Lights , Sound', 1, 1, 0, 0, 0, 1, 0, 'http://depts.washington.edu/adaptuw/wordpress/wp-content/uploads/2019/05/piggy_bank.jpg'),
-(31, 'CAT Buildin\' Crew Lightning Load Powerhouse Pete Bulldozer', 'Lights , Sound , Motion', 1, 0, 0, 1, 0, 0, 0, 'http://depts.washington.edu/adaptuw/wordpress/wp-content/uploads/2019/05/bulldozer.jpg'),
+(31, 'CAT Buildin\' Crew Lightning Pete Bulldozer', 'Lights , Sound , Motion', 1, 0, 0, 1, 0, 0, 0, 'http://depts.washington.edu/adaptuw/wordpress/wp-content/uploads/2019/05/bulldozer.jpg'),
 (32, 'Shaking School Bus', 'Lights , Sound , Motion', 2, 1, 1, 0, 0, 1, 0, ''),
 (33, 'Take Along Carrier Toy Bar', 'Lights , Sound', 1, 0, 0, 1, 0, 0, 0, ''),
 (34, 'Spin and Learn Color Flashlight', 'Lights , Sound', 3, 0, 1, 2, 0, 1, -1, ''),
