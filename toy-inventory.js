@@ -40,8 +40,8 @@
     id("loading").classList.remove("hidden");
     e.preventDefault();
     let searchTerm = id("search-term").value.trim();
-    if (searchTerm.match(/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi)) {
-      displayErrorView("Potential malicious attack detected. Please try other search terms");
+    if (searchTerm.match(HACK_DETECT_REGEX)) {
+      displayErrorView("Potential malicious attack detected. Please try other search terms.");
     } else {
       id("search-term").value = searchTerm;
       if (searchTerm !== "") {
@@ -184,7 +184,6 @@
   function handleSearchNotFound() {
     displayErrorView("No toys found that match the filters and the search string '"
       + id("search-term").value.trim() + "', please try again.");
-    id("loading").classList.add("hidden");
   }
 
   /**
@@ -192,7 +191,6 @@
    */
   function handleError() {
     displayErrorView("Something went wrong with the request. Please try again later.");
-    id("loading").classList.add("hidden");
   }
 
   /**
@@ -203,6 +201,7 @@
     id("toy-list").classList.add("hidden");
     id("error-text").classList.remove("hidden");
     id("error-text").textContent = message;
+    id("loading").classList.add("hidden");
   }
 
   /**
