@@ -5,6 +5,19 @@
     This is the style.css page for the Adapted Toy Inventory to give the site a
     consistent look and feel.
 */
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  z-index: 1;
+  background-color: white;
+  text-align: center;
+}
+
+footer p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 
 #error-text {
   margin: 20px auto auto 20px;
