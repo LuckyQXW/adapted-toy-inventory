@@ -28,6 +28,7 @@ footer p {
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 #toy-list div {
