@@ -70,7 +70,7 @@
       $rows->execute();
       $output = array();
       $rows->setFetchMode(PDO::FETCH_ASSOC);
-      foreach($rows as $row) {
+      foreach ($rows as $row) {
         array_push($output, $row);
       }
       return $output;
