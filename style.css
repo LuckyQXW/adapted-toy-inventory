@@ -1,0 +1,67 @@
+/*
+    Name: Wen Qiu
+    Date: May 30, 2019
+    Section: CSE 154 AJ
+    This is the style.css page for the Adapted Toy Inventory to give the site a
+    consistent look and feel.
+*/
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  z-index: 1;
+  background-color: white;
+  text-align: center;
+}
+
+footer p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#error-text {
+  margin: 20px auto auto 20px;
+}
+
+#toy-list {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+#toy-list div {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 0 0 10px gray;
+  width: 300px;
+  height: 300px;
+  padding: 5px 10px 0px 10px;
+  margin: 20px;
+  text-align: center;
+}
+
+/* Dimensions of toy cover images */
+#toy-list img {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 150px;
+  width: 230px;
+}
+
+#toy-list h2 {
+  font-size: 1.2em;
+}
+
+#toy-list h3 {
+  font-size: 1em;
+}
+
+.selectable {
+  cursor: pointer;
+}
+
+.hidden, #toy-list.hidden {
+  display: none;
+}
